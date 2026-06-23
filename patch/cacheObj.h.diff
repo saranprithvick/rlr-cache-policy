@@ -1,0 +1,26 @@
+diff --git a/libCacheSim/include/libCacheSim/cacheObj.h b/libCacheSim/include/libCacheSim/cacheObj.h
+index 057612c..290308c 100644
+--- a/libCacheSim/include/libCacheSim/cacheObj.h
++++ b/libCacheSim/include/libCacheSim/cacheObj.h
+@@ -148,6 +148,13 @@ typedef struct {
+   int32_t freq;
+ } __attribute__((packed)) Sieve_obj_params_t;
+ 
++typedef struct {
++  uint8_t age_counter; /* 5-bit saturating counter, counts set misses since last
++                          access */
++  uint8_t hit_register;  /* 1-bit: set to 1 when line receives a demand hit */
++  uint8_t type_register; /* 1-bit: 1 = non-prefetch, 0 = prefetch */
++} RLR_obj_metadata_t;
++
+ // ############################## cache obj ###################################
+ struct cache_obj;
+ typedef struct cache_obj {
+@@ -194,6 +201,7 @@ typedef struct cache_obj {
+     Sieve_obj_params_t sieve;
+     CAR_obj_metadata_t CAR;
+     Clock2QPlus_obj_metadata_t Clock2QPlus;
++    RLR_obj_metadata_t RLR;  // for RLR
+ 
+ #if defined(ENABLE_GLCACHE) && ENABLE_GLCACHE == 1
+     GLCache_obj_metadata_t GLCache;
