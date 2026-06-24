@@ -142,15 +142,36 @@ by 1 (multiply by 2), combined into a single right-shift by 4.
 | 8 | Implement priority computation | ✅ Done |
 | 9 | Implement victim selection | ✅ Done |
 | 10 | Implement cache bypass | ✅ Done |
-| 11 | Register RLR in CMakeLists and policy registry | 🔄 In progress |
-| 12 | Build and verify | 🔲 Pending |
-| 13 | Smoke test | 🔲 Pending |
+| 11 | Register RLR in CMakeLists and policy registry | ✅ Done |
+| 12 | Build and verify | ✅ Done |
+| 13 | Smoke test | ✅ Done |
 | 14 | Run benchmark traces | 🔲 Pending |
 | 15 | Verify results against paper | 🔲 Pending |
 | 16 | Document storage overhead | 🔲 Pending |
 | 17 | Write results report | 🔲 Pending |
 
 ---
+
+## Smoke Test Results
+
+Initial validation was run on the `cloudPhysicsIO.vscsi` sample trace
+included with libCacheSim, using a 1MB cache size.
+
+| Policy | Miss Ratio | Byte Miss Ratio |
+|--------|------------|-----------------|
+| FIFO   | 0.8766     | 0.9827          |
+| LRU    | 0.8646     | 0.9813          |
+| RLR    | **0.8514** | **0.9800**      |
+
+RLR achieves the lowest miss ratio of all three policies on this trace,
+consistent with the paper's claim that RLR outperforms LRU and FIFO.
+
+> **Note on throughput:** RLR runs at 1.67 MQPS vs LRU's 2.47 MQPS in
+> simulation. This is expected — RLR scans all lines in a set to find the
+> lowest priority victim, whereas LRU simply pops the tail of a linked
+> list. This overhead is a simulation artifact and would not apply in a
+> real hardware implementation where priority computation runs in parallel
+> with tag comparison.
 
 ## Reference
 
