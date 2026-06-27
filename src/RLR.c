@@ -19,6 +19,7 @@
 #include <limits.h>
 
 #include "../../include/libCacheSim/evictionAlgo.h"
+#include "dataStructure/hashtable/hashtable.h"
 
 #ifdef __cplusplus
 extern "C" {
